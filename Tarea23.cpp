@@ -6,29 +6,21 @@ using namespace std;
 
 int main (void)
 {
-  int i,j,dominante=0,c=1;
+  int i,j,dominante=0,c=1,r=0;
   int arr[5][5];
-  int n=4;
+  int n=3;
 
-  arr[0][0]=1;
-  arr[0][1]=10;
-  arr[0][2]=2;
-  arr[0][3]=300;
+  arr[0][0]=4;
+  arr[0][1]=1;
+  arr[0][2]=3;
 
-  arr[1][0]=1;
-  arr[1][1]=10;
-  arr[1][2]=4;
-  arr[1][3]=5;
+  arr[1][0]=2;
+  arr[1][1]=8;
+  arr[1][2]=1;
 
   arr[2][0]=3;
-  arr[2][1]=9;
+  arr[2][1]=10;
   arr[2][2]=2;
-  arr[2][3]=1;
-
-  arr[3][0]=3;
-  arr[3][1]=9;
-  arr[3][2]=2;
-  arr[3][3]=2;
 
 
   printf("\nImprimiendo la matriz:\n");
@@ -101,6 +93,7 @@ int main (void)
     }
 
     b=0;
+    r=i;
     if(renc>arr[i][i])//El renglon no cumple así que se cambia orden
     {
       for(int l=0;l<n;l++)//Este for solo es para que se repitan las lineas la n cantidad de veces.
@@ -115,10 +108,13 @@ int main (void)
 
         if(arr[i][b]>renc2)
         {
-          aux=arr[i][i];
-          arr[i][i]=arr[i][b];
-          arr[i][b]=aux;
-          printf("\n Se cambió el renglon %i.\n",i);
+          for(i=0;i<n;i++)
+          {
+	           aux=arr[i][r];
+	           arr[i][r]=arr[i][b];
+	           arr[i][b]=aux;
+          }
+          printf("\nSe cambió el columna %i por la %i.\n",r,b);
         }
 
         if(b==n)
@@ -126,7 +122,9 @@ int main (void)
           printf("\nNo hay forma de acomodar el renglón %i para que sea dominante.\n",i);
         }
         b++;
+
       }
+
     }
 
   }
@@ -140,6 +138,6 @@ int main (void)
     }
     printf("\n");
   }
-  
+
   return 0;
 }
