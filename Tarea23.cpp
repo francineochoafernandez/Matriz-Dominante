@@ -38,42 +38,6 @@ void ImprimeDiago(float arr[20][20],int n)
     printf("\n");
   }
 }
-
-void ComparaDiago(float arr[20][20], int n, int op)
-{
-  //Comparando diagonal
-  float ren;
-
-  for(i=0;i<n;i++)
-  {
-    ren=0;
-    for(j=0;j<n;j++)
-    {
-      if (i!=j)
-      {
-        ren= ren + abs(arr[i][j]);
-
-      }
-    }
-
-    if(ren>abs(arr[i][i]))
-    {
-      if(op==1)
-      {
-        printf("\nLa matriz NO es dominante.\n");
-        printf("\nSe tratara de mover la matriz.\n");
-      }
-      else
-      {
-        printf("\nLa matriz NO se pudo acomodar para volverla dominante.\n");
-      }
-      i=n;
-      j=n;
-    }
-
-  }
-}
-
 void AcomodandoMatriz(float arr[20][20],int n)
 {
   float renc, renc2,aux;
@@ -122,9 +86,50 @@ void AcomodandoMatriz(float arr[20][20],int n)
 
   }
 
-  //Comparando de nuevo:
-  ComparaDiago(arr,n,2);
 }
+
+void ComparaDiago(float arr[20][20], int n, int op)
+{
+  //Comparando diagonal
+  float ren;
+  int c=0;
+
+  for(i=0;i<n;i++)
+  {
+    ren=0;
+    for(j=0;j<n;j++)
+    {
+      if (i!=j)
+      {
+        ren= ren + abs(arr[i][j]);
+      }
+    }
+
+    if(ren>abs(arr[i][i]))
+    {
+      if(op==1)
+      {
+        printf("\nLa matriz NO es dominante, no va a convergir.\n");
+        printf("\nSe tratara de mover la matriz.\n");
+        AcomodandoMatriz(arr, n);
+      }
+      else
+      {
+        printf("\nLa matriz NO se pudo acomodar para volverla dominante.\n");
+      }
+      i=n;
+      j=n;
+      c++;
+    }
+
+  }
+  if(c==0)
+  {
+    printf("\nLa matriz SI es dominante, sí va a convergir.\n");
+  }
+}
+
+
 
 
 int main (void)
@@ -155,10 +160,8 @@ int main (void)
 
   ComparaDiago(arr,n,1);
 
-
-  /////////////////
-  AcomodandoMatriz(arr, n);
-
+  //Comparando de nuevo:
+  ComparaDiago(arr,n,2);
   ImprimeMat(arr,n);
 
 return 0;
