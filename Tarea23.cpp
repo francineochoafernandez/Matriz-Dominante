@@ -3,37 +3,23 @@
 #include <cstring>
 #include <cmath>
 using namespace std;
+int i,j;
 
-int main (void)
+void ImprimeMat(float arr[20][20],int n)
 {
-  int i,j,dominante=0,c=1,r=0;
-  int arr[5][5];
-  int n=3;
-
-  arr[0][0]=4;
-  arr[0][1]=1;
-  arr[0][2]=3;
-
-  arr[1][0]=2;
-  arr[1][1]=8;
-  arr[1][2]=1;
-
-  arr[2][0]=3;
-  arr[2][1]=10;
-  arr[2][2]=2;
-
-
   printf("\nImprimiendo la matriz:\n");
   for(i=0;i<n;i++)
   {
     for(j=0;j<n;j++)
     {
-      printf("%d \t",arr[i][j]);
+      printf("%f \t",arr[i][j]);
     }
     printf("\n");
   }
+}
 
-
+void ImprimeDiago(float arr[20][20],int n)
+{
   //Imprimiendo la diagonal principal
   printf("\nImprimiendo la diagonal principal:\n");
   for(i=0;i<n;i++)
@@ -46,14 +32,17 @@ int main (void)
       }
       else
       {
-        printf("%i \t",arr[i][j]);
+        printf("%f \t",arr[i][j]);
       }
     }
     printf("\n");
   }
+}
 
+void ComparaDiago(float arr[20][20], int n, int op)
+{
   //Comparando diagonal
-  int ren;
+  float ren;
 
   for(i=0;i<n;i++)
   {
@@ -62,23 +51,33 @@ int main (void)
     {
       if (i!=j)
       {
-        ren= ren + arr[i][j];
+        ren= ren + abs(arr[i][j]);
 
       }
     }
 
-    if(ren>arr[i][i])
+    if(ren>abs(arr[i][i]))
     {
-      printf("\nRenglon %i NO es dominante.\n",i);
-    }
-    else
-    {
-      printf("\nRenglon %i SI es dominante.\n",i);
+      if(op==1)
+      {
+        printf("\nLa matriz NO es dominante.\n");
+        printf("\nSe tratara de mover la matriz.\n");
+      }
+      else
+      {
+        printf("\nLa matriz NO se pudo acomodar para volverla dominante.\n");
+      }
+      i=n;
+      j=n;
     }
 
   }
+}
 
-  int renc, renc2,b,aux;
+void AcomodandoMatriz(float arr[20][20],int n)
+{
+  float renc, renc2,aux;
+  int b,r=0;
 
   //Combirtiendola en diagonal Dominante
   for(i=0;i<n;i++)
@@ -88,13 +87,13 @@ int main (void)
     {
       if (i!=j)
       {
-        renc= renc + arr[i][j];
+        renc= renc + abs(arr[i][j]);
       }
     }
 
     b=0;
     r=i;
-    if(renc>arr[i][i])//El renglon no cumple así que se cambia orden
+    if(renc>abs(arr[i][i]))//El renglon no cumple así que se cambia orden
     {
       for(int l=0;l<n;l++)//Este for solo es para que se repitan las lineas la n cantidad de veces.
       {//Aquí se hacen todas las posibles combinaciones para ver cual digito es el que iria en la diagonal
@@ -103,10 +102,10 @@ int main (void)
         for(int k=0;k<n;k++)
         {
           if(k!=b)
-            renc2= renc2 + arr[i][k];
+            renc2= renc2 + abs(arr[i][k]);
         }
 
-        if(arr[i][b]>renc2)
+        if(abs(arr[i][b])>renc2)
         {
           for(i=0;i<n;i++)
           {
@@ -114,12 +113,6 @@ int main (void)
 	           arr[i][r]=arr[i][b];
 	           arr[i][b]=aux;
           }
-          printf("\nSe cambió el columna %i por la %i.\n",r,b);
-        }
-
-        if(b==n)
-        {
-          printf("\nNo hay forma de acomodar el renglón %i para que sea dominante.\n",i);
         }
         b++;
 
@@ -129,15 +122,44 @@ int main (void)
 
   }
 
-  printf("\nImprimiendo la matriz nueva:\n");
-  for(i=0;i<n;i++)
-  {
-    for(j=0;j<n;j++)
-    {
-      printf("%d \t",arr[i][j]);
-    }
-    printf("\n");
-  }
+  //Comparando de nuevo:
+  ComparaDiago(arr,n,2);
+}
 
-  return 0;
+
+int main (void)
+{
+  int dominante=0,c=1;
+  float arr[20][20];
+  int n=2;
+  arr[0][0]=1;
+  arr[0][1]=2;
+
+  arr[1][0]=1;
+  arr[1][1]=20;
+
+  /*
+  arr[0][0]=4;
+  arr[0][1]=10;
+  arr[0][2]=3;
+
+  arr[1][0]=8;
+  arr[1][1]=1;
+  arr[1][2]=1;
+
+  arr[2][0]=3;
+  arr[2][1]=1;
+  arr[2][2]=11;*/
+  ImprimeMat(arr,n);
+  ImprimeDiago(arr,n);
+
+  ComparaDiago(arr,n,1);
+
+
+  /////////////////
+  AcomodandoMatriz(arr, n);
+
+  ImprimeMat(arr,n);
+
+return 0;
 }
